@@ -92,3 +92,16 @@ CREATE TABLE loja.item_compra (
 	CONSTRAINT fk_item_id_comp FOREIGN KEY (item_id_comp) REFERENCES loja.compra (id_comp) ON DELETE CASCADE,
 	CONSTRAINT pk_item PRIMARY KEY (id_item_comp)
 );
+
+CREATE TABLE loja.review (
+	rev_id_jogo INT,
+	rev_id_cliente INT,
+	rev_comentario VARCHAR(400),
+	rev_nota NUMERIC(4,2),
+	rev_data DATE DEFAULT CURRENT_DATE,
+
+	CONSTRAINT fk_rev_id_cliente FOREIGN KEY (rev_id_cliente) REFERENCES loja.cliente (id_cliente) ON DELETE CASCADE,
+	CONSTRAINT fk_rev_id_jogo FOREIGN KEY (rev_id_jogo) REFERENCES loja.jogo (id_jogo) ON DELETE CASCADE,
+	CONSTRAINT pk_review PRIMARY KEY (rev_id_jogo, rev_id_cliente),
+	CONSTRAINT ck_rev_nota CHECK (rev_nota >= 0.00 AND rev_nota <= 10.0)
+);
