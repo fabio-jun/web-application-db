@@ -22,6 +22,13 @@ VALUES ('Jose', 'da silva', 'Avenida JK, 123', '55043912345678', 'josedasilva@gm
 INSERT INTO loja.carrinho (car_id_cliente, car_id_jogo, car_qtd) VALUES (1, 1, 1);
 INSERT INTO loja.carrinho (car_id_cliente, car_id_jogo, car_qtd) VALUES (1, 2, 2);
 
+-- ADICIONAR REVIEWS PARA OS JOGOS
+INSERT INTO loja.review (rev_id_jogo, rev_id_cliente, rev_comentario, rev_nota) 
+VALUES (1, 1, 'Jogo incrível, ótima história e gráficos impressionantes!', 9.8);
+
+INSERT INTO loja.review (rev_id_jogo, rev_id_cliente, rev_comentario, rev_nota) 
+VALUES (2, 1, 'Achei o jogo interessante, mas poderia ter mais variedade de missões.', 5.8);
+
 -- ATUALIZAR QUANTIDADE DE UM ITEM DO CARRINHO
 UPDATE loja.carrinho SET car_qtd = 3 WHERE car_id_cliente = 1 AND car_id_jogo = 1;
 
@@ -63,6 +70,16 @@ SELECT item_id_comp AS id_compra, id_item_comp AS id_item, item_nome_jogo AS nom
 FROM loja.item_compra
 WHERE item_id_comp = 1;
 
+-- CONSULTAR REVIEWS DE UM JOGO
+SELECT rev_id_cliente, rev_comentario, rev_nota, rev_data
+FROM loja.review
+WHERE rev_id_jogo = 1;
+
+-- CONSULTAR REVIEWS DE UM CLIENTE
+SELECT rev_id_jogo, rev_comentario, rev_nota, rev_data
+FROM loja.review
+WHERE rev_id_cliente = 1;
+
 -- ATUALIZAR INFORMAÇÕES DO CLIENTE
 UPDATE loja.cliente 
 SET pnome = 'Maria',
@@ -81,3 +98,7 @@ DELETE FROM loja.cliente WHERE id_cliente = 1;
 
 -- REMOVER COMPRA 
 DELETE FROM loja.compra WHERE id_comp = 1;
+
+-- REMOVER REVIEW DE UM CLIENTE PARA UM JOGO
+DELETE FROM loja.review 
+WHERE rev_id_jogo = 1 AND rev_id_cliente = 1;
