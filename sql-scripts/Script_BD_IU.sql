@@ -98,30 +98,50 @@ INSERT INTO loja.desenvolvedor (nome_desenvolvedor, des_id_jogo) VALUES ('Larian
 
 -- CADASTRAR UM NOVO CLIENTE
 INSERT INTO loja.cliente (pnome, snome, endereco, telefone, email, senha) 
-VALUES ('Jose', 'da silva', 'Avenida JK, 123', '43912345678', 'josedasilva@gmail.com', 'jose123');
+VALUES ('Jose', 'da Silva', 'Avenida JK, 123', '43912345678', 'josedasilva@gmail.com', 'jose123');
+
+-- CADASTRAR UM NOVO CLIENTE
+INSERT INTO loja.cliente (pnome, snome, endereco, telefone, email, senha) 
+VALUES ('Maria', 'das Dores', 'Avenida Higienópolis, 1024', '43912345123', 'mariadasdores@gmail.com', 'maria1024');
 
 -- ADICIONAR ITENS AO CARRINHO
 INSERT INTO loja.carrinho (car_id_cliente, car_id_jogo, car_qtd) VALUES (1, 1, 1);
 INSERT INTO loja.carrinho (car_id_cliente, car_id_jogo, car_qtd) VALUES (1, 2, 2);
+
+INSERT INTO loja.carrinho (car_id_cliente, car_id_jogo, car_qtd) VALUES (2, 3, 2);
+INSERT INTO loja.carrinho (car_id_cliente, car_id_jogo, car_qtd) VALUES (2, 4, 3);
 
 -- ADICIONAR REVIEWS PARA OS JOGOS
 INSERT INTO loja.review (rev_id_jogo, rev_id_cliente, rev_comentario, rev_nota) 
 VALUES (1, 1, 'Jogo incrível, ótima história e gráficos impressionantes', 9.6);
 
 INSERT INTO loja.review (rev_id_jogo, rev_id_cliente, rev_comentario, rev_nota) 
-VALUES (2, 1, 'Achei o jogo interessante, mas poderia ter mais variedade de missões.', 5.5);
+VALUES (2, 1, 'Achei o jogo interessante, mas poderia ter mais variedade de missões.', 6.5);
+
+INSERT INTO loja.review (rev_id_jogo, rev_id_cliente, rev_comentario, rev_nota) 
+VALUES (3, 2, 'Jogo chato, muito repetitivo', 3.0);
+
+INSERT INTO loja.review (rev_id_jogo, rev_id_cliente, rev_comentario, rev_nota) 
+VALUES (4, 2, 'Achei muito difícil, perdi o interesse.', 5.5);
 
 -- ATUALIZAR QUANTIDADE DE UM ITEM DO CARRINHO
 UPDATE loja.carrinho SET car_qtd = 3 WHERE car_id_cliente = 1 AND car_id_jogo = 1;
+UPDATE loja.carrinho SET car_qtd = 3 WHERE car_id_cliente = 2 AND car_id_jogo = 3;
 
 -- REMOVER ITEM DO CARRINHO
 DELETE FROM loja.carrinho WHERE car_id_cliente = 1 AND car_id_jogo = 1;
+DELETE FROM loja.carrinho WHERE car_id_cliente = 2 AND car_id_jogo = 4;
 
 -- FINALIZAR COMPRA  --> INSERIR TABELA EM COMPRA, PASSAR OS ITENS E CALCULAR PRECO
-INSERT INTO loja.compra (comp_id_cliente, comp_preco) VALUES (1, 889.97);
+INSERT INTO loja.compra (comp_id_cliente, comp_preco) VALUES (1, 309.79);
 
 INSERT INTO loja.item_compra (item_id_comp, item_id_jogo, item_nome_jogo, item_preco_jogo, item_qtd) VALUES (1, 1, 'God of War', 129.99, 3);
-INSERT INTO loja.item_compra (item_id_comp, item_id_jogo, item_nome_jogo, item_preco_jogo, item_qtd) VALUES (1, 2, 'Horizon', 250.00, 2);
+INSERT INTO loja.item_compra (item_id_comp, item_id_jogo, item_nome_jogo, item_preco_jogo, item_qtd) VALUES (1, 2, 'Horizon', 89.90, 2);
+
+INSERT INTO loja.compra (comp_id_cliente, comp_preco) VALUES (2, 675.39);
+
+INSERT INTO loja.item_compra (item_id_comp, item_id_jogo, item_nome_jogo, item_preco_jogo, item_qtd) VALUES (2, 3, 'Final Fantasy VII Rebirth', 349.90, 1);
+INSERT INTO loja.item_compra (item_id_comp, item_id_jogo, item_nome_jogo, item_preco_jogo, item_qtd) VALUES (2, 4, 'Demons Souls', 325.49, 1);
 
 -- CONSULTAR JOGOS POR CATEGORIA
 SELECT j.nome, j.descricao, j.preco, j.lancamento, j.nota, j.image_path, c.nome_categoria, p.nome_plataforma, d.nome_desenvolvedor 
@@ -129,7 +149,7 @@ FROM loja.categoria c
 JOIN loja.jogo j ON c.cat_id_jogo = j.id_jogo
 JOIN loja.plataforma p ON c.cat_id_jogo = p.plat_id_jogo 
 JOIN loja.desenvolvedor d ON c.cat_id_jogo = d.des_id_jogo 
-WHERE nome_categoria = 'ação';
+WHERE nome_categoria = 'fps';
 
 -- CONSULTAR JOGOS POR PLATAFORMA
 SELECT j.nome, j.descricao, j.preco, j.lancamento, j.nota, j.image_path, c.nome_categoria, p.nome_plataforma, d.nome_desenvolvedor 
@@ -184,3 +204,23 @@ DELETE FROM loja.compra WHERE id_comp = 1;
 -- REMOVER REVIEW DE UM CLIENTE PARA UM JOGO
 DELETE FROM loja.review 
 WHERE rev_id_jogo = 1 AND rev_id_cliente = 1;
+
+--CONSULTAR COMPRAS POR CLIENTE
+SELECT item_id_comp AS id_compra, id_item_comp AS id_item, item_nome_jogo AS nome_jogo, item_preco_jogo AS preco_jogo, item_qtd
+FROM loja.item_compra
+WHERE item_id_comp = 1;
+
+-- CONSULTAR REVIEWS DE UM CLIENTE
+SELECT rev_id_jogo, rev_comentario, rev_nota, rev_data
+FROM loja.review
+WHERE rev_id_cliente = 1;
+
+--CONSULTAR COMPRAS POR CLIENTE
+SELECT item_id_comp AS id_compra, id_item_comp AS id_item, item_nome_jogo AS nome_jogo, item_preco_jogo AS preco_jogo, item_qtd
+FROM loja.item_compra
+WHERE item_id_comp = 2;
+
+-- CONSULTAR REVIEWS DE UM CLIENTE
+SELECT rev_id_jogo, rev_comentario, rev_nota, rev_data
+FROM loja.review
+WHERE rev_id_cliente = 2;
