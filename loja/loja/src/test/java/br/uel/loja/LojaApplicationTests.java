@@ -1,10 +1,10 @@
-package br.uel.store;
+package br.uel.loja;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StoreApplicationTests {
+class LojaApplicationTests {
 
 	@Test
 	void contextLoads() {
