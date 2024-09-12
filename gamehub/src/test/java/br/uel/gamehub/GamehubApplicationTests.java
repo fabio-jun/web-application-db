@@ -1,13 +1,13 @@
-package br.uel.loja;
+package br.uel.gamehub;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LojaApplicationTests {
+class GamehubApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
