@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GamehubApplication<gamehub>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.uel.gamehub.GamehubApplication",
+            "projectName": "gamehub",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

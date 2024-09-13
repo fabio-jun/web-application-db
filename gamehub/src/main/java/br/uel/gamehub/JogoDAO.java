@@ -34,7 +34,7 @@ public class JogoDAO {
     }
 
     public void salvar(Jogo jogo) throws SQLException {
-        String sql = "INSERT INTO loja.jogo (nome, descricao, preco, lancamento, nota, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO loja.jogo (nome, descricao, preco, lancamento, nota, image_path) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, jogo.getNome());
             stmt.setString(2, jogo.getDescricao());
@@ -46,10 +46,5 @@ public class JogoDAO {
         }
     }
 
-    public List<Jogo> listarTodos() throws SQLException{
-        List<Jogo> jogos = new ArrayList<>();
-        String sql = "SELECT * FROM loja.jogo";
-        try (PreparedStatement stmt = )
     }
 
-}

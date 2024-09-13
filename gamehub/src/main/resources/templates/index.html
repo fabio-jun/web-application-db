@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Página Principal</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <h1>Bem-vindo ao GameHub</h1>
+    <p>Explore a nossa coleção de jogos disponíveis.</p>
+
+    <div th:if="${#lists.isEmpty(jogos)}">
+        <p>Nenhum jogo disponível no momento.</p>
+    </div>
+
+
+    <div class="game-list" th:if="${!#lists.isEmpty(jogos)}">
+        <div th:each="jogo : ${jogos}" class="game-item">
+            <img th:src="@{/images/${jogo.imagePath}}" onerror="this.onerror=null; this.src='/images/default.png';" alt="Capa do Jogo">
+            <h2 th:text="${jogo.nome}">Nome do Jogo</h2>
+            <p th:text="${jogo.descricao}">Descrição do Jogo</p>
+            <p class="price" th:text="${jogo.preco}">Preço</p>
+
+        </div>
+    </div>
+
+</body>
+</html>
