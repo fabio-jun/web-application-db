@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 public class JogoService {
 
     private final JogoDAO jogoDAO;
+    private final CategoriaDAO categoriaDAO; 
 
     public JogoService(Connection connection) {
         this.jogoDAO = new JogoDAO(connection);
+        this.categoriaDAO = new CategoriaDAO(connection); 
     }
 
-      public List<Jogo> listarTodos() {
+    public List<Jogo> listarTodos() {
         try {
             return jogoDAO.listarTodos();
         } catch (SQLException e) {
@@ -23,13 +25,13 @@ public class JogoService {
         }
     }
 
-        public List<Jogo> buscarJogosPorNome(String nome) {
-            try {
-                return jogoDAO.buscarPorNome(nome);
-            } catch (SQLException e) {
-                throw new RuntimeException("Erro ao buscar jogos por nome", e);
-            }
+    public List<Jogo> buscarJogosPorNome(String nome) {
+        try {
+            return jogoDAO.buscarPorNome(nome);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar jogos por nome", e);
         }
+    }
 
     public void atualizarJogo(Jogo jogo) throws SQLException {
         jogoDAO.atualizar(jogo);
@@ -48,8 +50,6 @@ public class JogoService {
     }
 
     public List<Categoria> buscarCategoriasPorJogo(int idJogo) throws SQLException {
-        return categoriaDAO.buscarPorIdJogo(idJogo); 
+        return categoriaDAO.buscarCategoriasPorJogo(idJogo); 
     }
-    
-    
 }

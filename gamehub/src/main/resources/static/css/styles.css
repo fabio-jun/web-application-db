@@ -1,76 +1,144 @@
-/* Estilos globais */
+/* Definir o fundo da página como cinza */
 body {
+    background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
 
-h1 {
-    text-align: center;
-    margin-top: 20px;
+/* Cabeçalho */
+header {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Layout flexível para o cabeçalho */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilo para o logo (GameHub) */
+.logo {
+    font-size: 2em;
     color: #333;
+    margin: 0;
+}
+
+/* Estilo para a barra de pesquisa */
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #555;
+}
+
+/* Estilos para o restante do conteúdo */
+h1 {
+    color: #333;
+    text-align: left;
+    margin-bottom: 20px;
 }
 
 p {
-    color: #555;
+    color: #666;
+    text-align: center;
 }
 
-.container {
+/* Estilos para a lista de jogos */
+.game-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-}
-
-.game-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
 }
 
 .game-item {
     background-color: white;
-    border: 1px solid #ddd;
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    width: 300px;
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
 }
 
-.game-item:hover {
-    transform: scale(1.05);
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
 }
 
-.game-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.game-item h2 {
-    font-size: 1.5em;
-    margin: 15px;
+h2 {
     color: #333;
-}
-
-.game-item p {
-    margin: 15px;
+    font-size: 1.5em;
 }
 
 .price {
-    font-size: 1.2em;
+    color: #28a745;
     font-weight: bold;
-    color: #2196F3;
-    margin: 15px;
 }
 
-/* Rodapé */
-footer {
+/* Estilo básico para o formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+}
+
+label, input, textarea {
+    margin-bottom: 15px;
+}
+
+/* Estilos dos botões */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    font-size: 16px;
     text-align: center;
-    padding: 20px;
-    background-color: #333;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
     color: white;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+}
+
+/* Estilos individuais para cada botão */
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
 }

@@ -11,6 +11,7 @@ public class Jogo {
     private LocalDate lancamento;
     private BigDecimal nota;
     private String imagePath;
+    private Integer catIdJogo;
 
     public Integer getIdJogo() {
         return idJogo;
@@ -66,5 +67,13 @@ public class Jogo {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public Integer getCatIdJogo() {
+        return catIdJogo;
+    }
+
+    public void setCatIdJogo(Integer catIdJogo) {
+        this.catIdJogo = catIdJogo;
     }
 }

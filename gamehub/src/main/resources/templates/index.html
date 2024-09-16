@@ -3,27 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub - Página Principal</title>
+    <title>GameHub - Menu de Administração</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        /* Estilo geral para centralizar conteúdo */
+        body {
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 36px;
+        }
+
+        .menu-container {
+            margin-top: 30px;
+        }
+
+        .menu-item {
+            display: block;
+            margin: 20px auto;
+            padding: 15px;
+            width: 200px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        .menu-item:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Bem-vindo ao GameHub</h1>
-    <p>Explore a nossa coleção de jogos disponíveis.</p>
+    <h1>Administração - GameHub</h1>
 
-    <div th:if="${#lists.isEmpty(jogos)}">
-        <p>Nenhum jogo disponível no momento.</p>
-    </div>
-
-
-    <div class="game-list" th:if="${!#lists.isEmpty(jogos)}">
-        <div th:each="jogo : ${jogos}" class="game-item">
-            <img th:src="@{/images/${jogo.imagePath}}" onerror="this.onerror=null; this.src='/images/default.png';" alt="Capa do Jogo">
-            <h2 th:text="${jogo.nome}">Nome do Jogo</h2>
-            <p th:text="${jogo.descricao}">Descrição do Jogo</p>
-            <p class="price" th:text="${jogo.preco}">Preço</p>
-
-        </div>
+    <!-- Menu de administração -->
+    <div class="menu-container">
+        <a href="/jogos" class="menu-item">Exibir Jogos para Edição</a>
+        <a href="/jogos/adicionar" class="menu-item">Adicionar Novo Jogo</a>
+        <a href="/clientes" class="menu-item">Exibir Clientes</a>
     </div>
 
 </body>

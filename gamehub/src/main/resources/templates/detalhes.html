@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Jogo</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .secondary-button-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Ajustando o tamanho da caixa de texto de descrição */
+        textarea#descricao {
+            width: 100%;
+            height: 150px;
+            resize: vertical;
+        }
+        
+        /* Centraliza e reduz o tamanho da imagem do jogo */
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 10%; /* Reduzindo o tamanho da imagem */
+        }
+    </style>
+</head>
+<body>
+
+    <h1 th:text="${jogo.nome}">Editar Jogo</h1>
+
+    <!-- Exibição da imagem do jogo -->
+    <img th:src="@{'/images/' + ${jogo.imagePath}}" alt="Imagem do Jogo">
+
+    <!-- Formulário para editar o jogo -->
+    <form th:action="@{'/jogos/' + ${jogo.idJogo} + '/editar'}" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" th:value="${jogo.nome}" required>
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" th:text="${jogo.descricao}" required></textarea>
+
+        <label for="preco">Preço:</label>
+        <input type="text" id="preco" name="preco" th:value="${jogo.preco}" required>
+
+        <label for="lancamento">Data de Lançamento:</label>
+        <input type="date" id="lancamento" name="lancamento" th:value="${jogo.lancamento}" required>
+
+        <label for="nota">Nota:</label>
+        <input type="text" id="nota" name="nota" th:value="${jogo.nota}" required>
+
+        <label for="imagePath">Caminho da Imagem:</label>
+        <input type="text" id="imagePath" name="imagePath" th:value="${jogo.imagePath}" required>
+
+        <!-- Campo de seleção para a categoria -->
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" name="categoria" required>
+            <option th:each="categoria : ${categorias}" th:value="${categoria.catIdJogo}" th:text="${categoria.nomeCategoria}" th:selected="${categoria.catIdJogo == jogo.categoria.catIdJogo}">Categoria</option>
+        </select>
+
+        <!-- Contêiner para os botões -->
+        <div class="button-container">
+            <button type="submit" class="btn-primary">Salvar Alterações</button>
+            <form th:action="@{'/jogos/' + ${jogo.idJogo} + '/remover'}" method="post" style="display: inline;">
+                <button type="submit" class="btn-danger">Remover Jogo</button>
+            </form>
+        </div>
+
+        <!-- Botão Retornar ao Index em outra linha -->
+        <div class="secondary-button-container">
+            <a href="/" class="btn-secondary">Retornar ao Index</a>
+        </div>
+    </form>
+
+</body>
+</html>
