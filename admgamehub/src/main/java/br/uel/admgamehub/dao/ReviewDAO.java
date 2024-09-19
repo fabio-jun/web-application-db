@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.uel.admgamehub.model.Review;
 
+@Repository
 public class ReviewDAO {
 
     private static final String CREATE_QUERY =

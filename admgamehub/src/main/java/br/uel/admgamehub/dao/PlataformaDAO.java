@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import br.uel.admgamehub.model.Plataforma;
 
+@Repository
 public class PlataformaDAO {
 
     private static final String CREATE_QUERY =

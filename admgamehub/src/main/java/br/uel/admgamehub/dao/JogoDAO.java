@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.stereotype.Repository;
+
 import br.uel.admgamehub.model.Jogo;
 
+@Repository
 public class JogoDAO implements DAO<Jogo>{
     
     private static final String CREATE_QUERY =
