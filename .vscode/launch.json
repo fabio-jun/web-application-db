@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AdmgamehubApplication",
+            "request": "launch",
+            "mainClass": "br.uel.admgamehub.AdmgamehubApplication",
+            "projectName": "admgamehub"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-GamehubApplication<gamehub>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
