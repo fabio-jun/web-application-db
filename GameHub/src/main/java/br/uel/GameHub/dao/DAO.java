@@ -1,4 +1,4 @@
-package br.uel.GameHub.dao;
+package br.uel.gamehub.dao;
 
 import java.sql.SQLException;
 import java.util.List;

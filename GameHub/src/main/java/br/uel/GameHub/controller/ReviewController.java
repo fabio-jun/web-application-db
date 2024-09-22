@@ -1,4 +1,4 @@
-package br.uel.GameHub.controller;
+package br.uel.gamehub.controller;
 
 import java.sql.SQLException;
 import java.util.List;

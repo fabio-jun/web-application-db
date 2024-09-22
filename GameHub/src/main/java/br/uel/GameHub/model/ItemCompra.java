@@ -1,4 +1,4 @@
-package br.uel.GameHub.model;
+package br.uel.gamehub.model;
 
 public class ItemCompra {
     private int idItemComp;

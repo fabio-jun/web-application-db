@@ -1,4 +1,4 @@
-package br.uel.GameHub.controller;
+package br.uel.gamehub.controller;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.uel.admgamehub.dao.PlataformaDAO;
-import br.uel.admgamehub.model.Plataforma;
+import br.uel.gamehub.dao.PlataformaDAO;
+import br.uel.gamehub.model.Plataforma;
 
 @RestController
 @RequestMapping("/plataformas")

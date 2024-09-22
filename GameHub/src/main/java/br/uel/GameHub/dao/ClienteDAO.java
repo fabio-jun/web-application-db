@@ -1,4 +1,4 @@
-package br.uel.GameHub.dao;
+package br.uel.gamehub.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,22 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import br.uel.admgamehub.model.Cliente;
+import br.uel.gamehub.model.Cliente;
 
 @Repository
 public class ClienteDAO {
 
-    private final Connection connection;
+    @Autowired
+    private DataSource dataSource;
 
-    public ClienteDAO(Connection connection) {
-        this.connection = connection;
+    private Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 
     public void salvar(Cliente cliente) throws SQLException {
         String sql = "INSERT INTO loja.cliente (pnome, snome, endereco, telefone, email, senha) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cliente.getPnome());
             stmt.setString(2, cliente.getSnome());
             stmt.setString(3, cliente.getEndereco());
@@ -36,18 +41,20 @@ public class ClienteDAO {
     public Cliente buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM loja.cliente WHERE id_cliente = ?";
         Cliente cliente = null;
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                cliente = new Cliente();
-                cliente.setIdCliente(rs.getInt("id_cliente"));
-                cliente.setPnome(rs.getString("pnome"));
-                cliente.setSnome(rs.getString("snome"));
-                cliente.setEndereco(rs.getString("endereco"));
-                cliente.setTelefone(rs.getString("telefone"));
-                cliente.setEmail(rs.getString("email"));
-                cliente.setSenha(rs.getString("senha"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    cliente = new Cliente();
+                    cliente.setIdCliente(rs.getInt("id_cliente"));
+                    cliente.setPnome(rs.getString("pnome"));
+                    cliente.setSnome(rs.getString("snome"));
+                    cliente.setEndereco(rs.getString("endereco"));
+                    cliente.setTelefone(rs.getString("telefone"));
+                    cliente.setEmail(rs.getString("email"));
+                    cliente.setSenha(rs.getString("senha"));
+                }
             }
         }
         return cliente;
@@ -56,8 +63,9 @@ public class ClienteDAO {
     public List<Cliente> listarTodos() throws SQLException {
         List<Cliente> clientes = new ArrayList<>();
         String sql = "SELECT * FROM loja.cliente";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Cliente cliente = new Cliente();
                 cliente.setIdCliente(rs.getInt("id_cliente"));
@@ -75,7 +83,8 @@ public class ClienteDAO {
 
     public void atualizar(Cliente cliente) throws SQLException {
         String sql = "UPDATE loja.cliente SET pnome = ?, snome = ?, endereco = ?, telefone = ?, email = ?, senha = ? WHERE id_cliente = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cliente.getPnome());
             stmt.setString(2, cliente.getSnome());
             stmt.setString(3, cliente.getEndereco());
@@ -89,7 +98,8 @@ public class ClienteDAO {
 
     public void remover(int id) throws SQLException {
         String sql = "DELETE FROM loja.cliente WHERE id_cliente = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }

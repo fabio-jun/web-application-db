@@ -1,4 +1,4 @@
-package br.uel.GameHub.dao;
+package br.uel.gamehub.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import br.uel.admgamehub.model.Categoria;
+import br.uel.gamehub.model.Categoria;
 
 @Repository
 public class CategoriaDAO {
@@ -29,14 +32,16 @@ public class CategoriaDAO {
     private static final String ALL_QUERY =
         "SELECT nome_categoria, cat_id_jogo FROM loja.categoria";
 
-    private final Connection connection;
+    @Autowired
+    private DataSource dataSource;
 
-    public CategoriaDAO(Connection connection) {
-        this.connection = connection;
+    private Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 
     public void create(Categoria categoria) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_QUERY)) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_QUERY)) {
             statement.setString(1, categoria.getNomeCategoria());
             statement.setInt(2, categoria.getIdJogo());
             statement.executeUpdate();
@@ -45,7 +50,8 @@ public class CategoriaDAO {
 
     public Categoria read(String nomeCategoria, int idJogo) throws SQLException {
         Categoria categoria = null;
-        try (PreparedStatement statement = connection.prepareStatement(READ_QUERY)) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(READ_QUERY)) {
             statement.setString(1, nomeCategoria);
             statement.setInt(2, idJogo);
             try (ResultSet result = statement.executeQuery()) {
@@ -60,7 +66,8 @@ public class CategoriaDAO {
     }
 
     public void update(Categoria categoria) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setString(1, categoria.getNomeCategoria());
             statement.setInt(2, categoria.getIdJogo());
             statement.executeUpdate();
@@ -68,7 +75,8 @@ public class CategoriaDAO {
     }
 
     public void delete(String nomeCategoria, int idJogo) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setString(1, nomeCategoria);
             statement.setInt(2, idJogo);
             statement.executeUpdate();
@@ -77,7 +85,8 @@ public class CategoriaDAO {
 
     public List<Categoria> all() throws SQLException {
         List<Categoria> categoriaList = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(ALL_QUERY);
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(ALL_QUERY);
              ResultSet result = statement.executeQuery()) {
             while (result.next()) {
                 Categoria categoria = new Categoria();

@@ -1,4 +1,4 @@
-package br.uel.GameHub;
+package br.uel.gamehub;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

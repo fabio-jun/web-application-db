@@ -1,4 +1,4 @@
-package br.uel.GameHub;
+package br.uel.gamehub;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

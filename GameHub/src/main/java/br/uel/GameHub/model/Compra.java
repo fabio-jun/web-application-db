@@ -1,4 +1,4 @@
-package br.uel.GameHub.model;
+package br.uel.gamehub.model;
 
 import java.math.BigDecimal;
 
