@@ -74,6 +74,7 @@ CREATE TABLE loja.compra (
 	id_comp INT DEFAULT nextval ('loja.compra_id_seq'),
 	comp_id_cliente INT,
 	comp_preco NUMERIC (6,2), --preço total da compra
+	comp_data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- data e hora da compra
 
 	CONSTRAINT fk_comp_id_cliente FOREIGN KEY (comp_id_cliente) REFERENCES loja.cliente (id_cliente) ON DELETE SET NULL,
 	CONSTRAINT pk_comp PRIMARY KEY (id_comp)
