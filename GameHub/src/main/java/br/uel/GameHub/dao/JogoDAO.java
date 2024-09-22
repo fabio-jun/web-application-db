@@ -42,6 +42,10 @@ public class JogoDAO implements DAO<Jogo> {
             "DELETE FROM loja.jogo " +
             "WHERE id_jogo = ?;";
 
+    private static final String SEARCH_QUERY =
+            "SELECT id_jogo, nome, descricao, preco, lancamento, nota, image_path " +
+            "FROM loja.jogo WHERE nome ILIKE ? OR descricao ILIKE ?;";  // ILIKE faz a busca ser case-insensitive
+
     @Autowired
     private DataSource dataSource;
 
@@ -191,5 +195,30 @@ public class JogoDAO implements DAO<Jogo> {
             throw new SQLException("Erro ao listar jogos.");
         }
         return jogoList;
+    }
+
+    public List<Jogo> searchByKeyword(String keyword) throws SQLException {
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(SEARCH_QUERY)) {
+            String searchPattern = "%" + keyword + "%"; // busca por qualquer parte da palavra
+            statement.setString(1, searchPattern);
+            statement.setString(2, searchPattern);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Jogo jogo = new Jogo();
+                    jogo.setIdJogo(resultSet.getInt("id_jogo"));
+                    jogo.setNome(resultSet.getString("nome"));
+                    jogo.setDescricao(resultSet.getString("descricao"));
+                    jogo.setPreco(resultSet.getBigDecimal("preco"));
+                    jogo.setLancamento(resultSet.getDate("lancamento"));
+                    jogo.setNota(resultSet.getBigDecimal("nota"));
+                    jogo.setImagePath(resultSet.getString("image_path"));
+                    jogos.add(jogo);
+                }
+            }
+        }
+        return jogos;
     }
 }

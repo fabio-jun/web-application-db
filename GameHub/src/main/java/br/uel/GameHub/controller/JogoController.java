@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.uel.gamehub.dao.JogoDAO;
@@ -63,6 +64,19 @@ public class JogoController {
         try {
             jogoDAO.delete(id);
             return ResponseEntity.noContent().build();
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+       @GetMapping("/buscar")
+    public ResponseEntity<List<Jogo>> searchByKeyword(@RequestParam String keyword) {
+        try {
+            List<Jogo> jogos = jogoDAO.searchByKeyword(keyword);
+            if (jogos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(jogos);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

@@ -1,6 +1,5 @@
 package br.uel.gamehub.controller;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,8 +23,8 @@ public class DesenvolvedorController {
 
     private final DesenvolvedorDAO desenvolvedorDAO;
 
-    public DesenvolvedorController(Connection connection) {
-        this.desenvolvedorDAO = new DesenvolvedorDAO(connection);
+    public DesenvolvedorController(DesenvolvedorDAO desenvolvedorDAO) {
+        this.desenvolvedorDAO = desenvolvedorDAO;
     }
 
     @GetMapping

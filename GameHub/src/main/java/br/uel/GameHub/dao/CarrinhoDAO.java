@@ -32,6 +32,12 @@ public class CarrinhoDAO {
     private static final String ALL_QUERY =
         "SELECT car_id_cliente, car_id_jogo, car_qtd FROM loja.carrinho";
 
+    private static final String FIND_BY_CLIENTE_QUERY =
+        "SELECT * FROM loja.carrinho WHERE car_id_cliente = ?";
+
+    private static final String DELETE_BY_CLIENTE_QUERY =
+        "DELETE FROM loja.carrinho WHERE car_id_cliente = ?";
+
     @Autowired
     private DataSource dataSource;
 
@@ -100,5 +106,33 @@ public class CarrinhoDAO {
             }
         }
         return carrinhoList;
+    }
+
+    // Método para encontrar todos os itens do carrinho de um cliente
+    public List<Carrinho> findByClienteId(int clienteId) throws SQLException {
+        List<Carrinho> carrinhoList = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_CLIENTE_QUERY)) {
+            statement.setInt(1, clienteId);
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    Carrinho carrinho = new Carrinho();
+                    carrinho.setIdCliente(result.getInt("car_id_cliente"));
+                    carrinho.setIdJogo(result.getInt("car_id_jogo"));
+                    carrinho.setQtd(result.getInt("car_qtd"));
+                    carrinhoList.add(carrinho);
+                }
+            }
+        }
+        return carrinhoList;
+    }
+
+    // Método para limpar o carrinho de um cliente após a compra
+    public void clearCarrinhoByClienteId(int clienteId) throws SQLException {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_BY_CLIENTE_QUERY)) {
+            statement.setInt(1, clienteId);
+            statement.executeUpdate();
+        }
     }
 }

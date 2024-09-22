@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.uel.admgamehub.dao.ReviewDAO;
-import br.uel.admgamehub.model.Review;
+import br.uel.gamehub.dao.ReviewDAO;
+import br.uel.gamehub.model.Review;
 
 @RestController
 @RequestMapping("/reviews")

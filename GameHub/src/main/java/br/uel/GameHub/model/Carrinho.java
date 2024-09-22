@@ -3,33 +3,40 @@ package br.uel.gamehub.model;
 public class Carrinho {
 
     private int idCliente;
-
     private int idJogo;
-
     private int qtd;
+    private Jogo jogo;
 
-    public int getIdCliente (){
+    // Getters e setters
+    public int getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente (int idCliente){
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 
-    public int getIdJogo (){
+    public int getIdJogo() {
         return idJogo;
     }
 
-    public void setIdJogo (int idJogo){
+    public void setIdJogo(int idJogo) {
         this.idJogo = idJogo;
     }
 
-    public int getQtd (){
+    public int getQtd() {
         return qtd;
     }
 
-    public void setQtd (int qtd){
+    public void setQtd(int qtd) {
         this.qtd = qtd;
     }
-    
+
+    public Jogo getJogo() {
+        return jogo;
+    }
+
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
+    }
 }
