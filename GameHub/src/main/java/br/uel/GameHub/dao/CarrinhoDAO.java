@@ -108,7 +108,6 @@ public class CarrinhoDAO {
         return carrinhoList;
     }
 
-    // Método para encontrar todos os itens do carrinho de um cliente
     public List<Carrinho> findByClienteId(int clienteId) throws SQLException {
         List<Carrinho> carrinhoList = new ArrayList<>();
         try (Connection connection = getConnection();
@@ -120,19 +119,25 @@ public class CarrinhoDAO {
                     carrinho.setIdCliente(result.getInt("car_id_cliente"));
                     carrinho.setIdJogo(result.getInt("car_id_jogo"));
                     carrinho.setQtd(result.getInt("car_qtd"));
-                    carrinhoList.add(carrinho);
+                    carrinhoList.add(carrinho);     
                 }
             }
         }
         return carrinhoList;
     }
 
-    // Método para limpar o carrinho de um cliente após a compra
     public void clearCarrinhoByClienteId(int clienteId) throws SQLException {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE_BY_CLIENTE_QUERY)) {
+            PreparedStatement statement = connection.prepareStatement(DELETE_BY_CLIENTE_QUERY)) {
             statement.setInt(1, clienteId);
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+  
+            if (affectedRows == 0) {
+                throw new SQLException("Erro ao limpar carrinho: nenhum item encontrado para o clienteId: " + clienteId);
+            }
+        } catch (SQLException ex) {
+        throw new SQLException("Erro ao limpar carrinho: " + ex.getMessage(), ex);
         }
     }
+
 }

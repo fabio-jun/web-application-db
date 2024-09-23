@@ -8,9 +8,9 @@ public class Compra {
     private int idCompra;
     private int idCliente;
     private BigDecimal preco;
-    private LocalDateTime dataHoraCompra; // Adicione esse campo
+    private LocalDateTime dataHoraCompra;
 
-    // Getters e Setters
+
     public int getIdCompra() {
         return idCompra;
     }

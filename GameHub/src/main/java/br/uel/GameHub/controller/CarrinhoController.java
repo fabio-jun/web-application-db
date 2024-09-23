@@ -40,28 +40,31 @@ public class CarrinhoController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Carrinho> adicionarItemAoCarrinho(@RequestBody Carrinho carrinho) {
+    @PostMapping("/cliente/{idCliente}")
+    public ResponseEntity<Carrinho> adicionarItemAoCarrinho(@PathVariable int idCliente, @RequestBody Carrinho carrinho) {
         try {
+            carrinho.setIdCliente(idCliente);
             carrinhoDAO.create(carrinho);
-            return ResponseEntity.status(HttpStatus.CREATED).body(carrinho);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(carrinho);
+    } catch (SQLException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+}
 
-    @GetMapping("/{idCliente}/{idJogo}")
-    public ResponseEntity<Carrinho> getCarrinhoByClienteAndJogo(@PathVariable int idCliente, @PathVariable int idJogo) {
+
+    @GetMapping("/{idCliente}")
+    public ResponseEntity<List<Carrinho>> getCarrinhoByCliente(@PathVariable int idCliente) {
         try {
-            Carrinho carrinho = carrinhoDAO.read(idCliente, idJogo);
-            if (carrinho == null) {
-                return ResponseEntity.notFound().build();
+            List<Carrinho> carrinhoList = carrinhoDAO.findByClienteId(idCliente); 
+            if (carrinhoList.isEmpty()) {
+                return ResponseEntity.noContent().build(); 
             }
-            return ResponseEntity.ok(carrinho);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(carrinhoList); 
+    } catch (SQLException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); 
     }
+}
+
 
     @PutMapping("/{idCliente}/{idJogo}")
     public ResponseEntity<Carrinho> atualizarQuantidadeItem(@PathVariable int idCliente, @PathVariable int idJogo, @RequestBody Carrinho carrinho) {

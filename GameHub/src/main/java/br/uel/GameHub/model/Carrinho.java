@@ -5,9 +5,7 @@ public class Carrinho {
     private int idCliente;
     private int idJogo;
     private int qtd;
-    private Jogo jogo;
 
-    // Getters e setters
     public int getIdCliente() {
         return idCliente;
     }
@@ -30,13 +28,5 @@ public class Carrinho {
 
     public void setQtd(int qtd) {
         this.qtd = qtd;
-    }
-
-    public Jogo getJogo() {
-        return jogo;
-    }
-
-    public void setJogo(Jogo jogo) {
-        this.jogo = jogo;
     }
 }
