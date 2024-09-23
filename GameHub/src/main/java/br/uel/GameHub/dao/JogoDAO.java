@@ -46,6 +46,30 @@ public class JogoDAO implements DAO<Jogo> {
             "SELECT id_jogo, nome, descricao, preco, lancamento, nota, image_path " +
             "FROM loja.jogo WHERE nome ILIKE ? OR descricao ILIKE ?;";  // ILIKE faz a busca ser case-insensitive
 
+    private static final String SEARCH_BY_DESENVOLVEDOR_QUERY = 
+            "SELECT j.id_jogo, j.nome, j.descricao, j.preco, j.lancamento, j.nota, j.image_path, " +
+            "c.nome_categoria, p.nome_plataforma, d.nome_desenvolvedor " +
+            "FROM loja.categoria c " +
+            "JOIN loja.jogo j ON c.cat_id_jogo = j.id_jogo " +
+            "JOIN loja.plataforma p ON c.cat_id_jogo = p.plat_id_jogo " +
+            "JOIN loja.desenvolvedor d ON c.cat_id_jogo = d.des_id_jogo " +
+            "WHERE d.nome_desenvolvedor = ?";
+
+    private static final String SEARCH_BY_PLATAFORMA_QUERY =
+            "SELECT j.id_jogo, j.nome, j.descricao, j.preco, j.lancamento, j.nota, j.image_path, p.nome_plataforma " +
+            "FROM loja.jogo j " +
+            "JOIN loja.plataforma p ON j.id_jogo = p.plat_id_jogo " +
+            "WHERE p.nome_plataforma = ?";
+
+    private static final String SEARCH_BY_CATEGORIA_QUERY = 
+            "SELECT j.id_jogo, j.nome, j.descricao, j.preco, j.lancamento, j.nota, j.image_path, " +
+            "c.nome_categoria, p.nome_plataforma, d.nome_desenvolvedor " +
+            "FROM loja.categoria c " +
+            "JOIN loja.jogo j ON c.cat_id_jogo = j.id_jogo " +
+            "JOIN loja.plataforma p ON c.cat_id_jogo = p.plat_id_jogo " +
+            "JOIN loja.desenvolvedor d ON c.cat_id_jogo = d.des_id_jogo " +
+            "WHERE c.nome_categoria = ?";
+
     @Autowired
     private DataSource dataSource;
 
@@ -198,6 +222,8 @@ public class JogoDAO implements DAO<Jogo> {
     }
 
     public List<Jogo> searchByKeyword(String keyword) throws SQLException {
+        keyword = keyword.trim().replaceAll("\\r?\\n", "");
+
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(SEARCH_QUERY)) {
@@ -221,4 +247,116 @@ public class JogoDAO implements DAO<Jogo> {
         }
         return jogos;
     }
+
+    public List<Jogo> searchByDesenvolvedor(String nomeDesenvolvedor) throws SQLException {
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(SEARCH_BY_DESENVOLVEDOR_QUERY)) {
+            
+            Logger.getLogger(JogoDAO.class.getName()).log(Level.INFO, "Buscando jogos para desenvolvedor: {0}", nomeDesenvolvedor);
+            
+            statement.setString(1, nomeDesenvolvedor);
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Jogo jogo = new Jogo();
+                    jogo.setIdJogo(resultSet.getInt("id_jogo"));
+                    jogo.setNome(resultSet.getString("nome"));
+                    jogo.setDescricao(resultSet.getString("descricao"));
+                    jogo.setPreco(resultSet.getBigDecimal("preco"));
+                    jogo.setLancamento(resultSet.getDate("lancamento"));
+                    jogo.setNota(resultSet.getBigDecimal("nota"));
+                    jogo.setImagePath(resultSet.getString("image_path"));
+                    
+                    // Caso queira adicionar o nome da categoria, plataforma, etc.
+                    String categoria = resultSet.getString("nome_categoria");
+                    String plataforma = resultSet.getString("nome_plataforma");
+                    String desenvolvedor = resultSet.getString("nome_desenvolvedor");
+
+                    Logger.getLogger(JogoDAO.class.getName()).log(Level.INFO, "Jogo encontrado: {0}, Categoria: {1}, Plataforma: {2}, Desenvolvedor: {3}", 
+                        new Object[]{jogo.getNome(), categoria, plataforma, desenvolvedor});
+                    
+                    jogos.add(jogo);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(JogoDAO.class.getName()).log(Level.SEVERE, "Erro ao buscar jogos por desenvolvedor: " + nomeDesenvolvedor, e);
+            throw e;
+        }
+        return jogos;
+    }
+
+    // Método para buscar jogos por plataforma
+    public List<Jogo> searchByPlataforma(String nomePlataforma) throws SQLException {
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(SEARCH_BY_PLATAFORMA_QUERY)) {
+            
+            Logger.getLogger(JogoDAO.class.getName()).log(Level.INFO, "Buscando jogos para plataforma: {0}", nomePlataforma);
+
+            statement.setString(1, nomePlataforma);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Jogo jogo = new Jogo();
+                    jogo.setIdJogo(resultSet.getInt("id_jogo"));
+                    jogo.setNome(resultSet.getString("nome"));
+                    jogo.setDescricao(resultSet.getString("descricao"));
+                    jogo.setPreco(resultSet.getBigDecimal("preco"));
+                    jogo.setLancamento(resultSet.getDate("lancamento"));
+                    jogo.setNota(resultSet.getBigDecimal("nota"));
+                    jogo.setImagePath(resultSet.getString("image_path"));
+                    jogos.add(jogo);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(JogoDAO.class.getName()).log(Level.SEVERE, "Erro ao buscar jogos por plataforma: " + nomePlataforma, e);
+            throw e;
+        }
+        return jogos;
+    }
+
+    // Método para buscar jogos por categoria
+    public List<Jogo> searchByCategoria(String nomeCategoria) throws SQLException {
+        List<Jogo> jogos = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(SEARCH_BY_CATEGORIA_QUERY)) {
+
+            Logger.getLogger(JogoDAO.class.getName()).log(Level.INFO, "Buscando jogos para categoria: {0}", nomeCategoria);
+
+            statement.setString(1, nomeCategoria);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.isBeforeFirst()) {
+                    Logger.getLogger(JogoDAO.class.getName()).log(Level.INFO, "Nenhum jogo encontrado para a categoria: {0}", nomeCategoria);
+                }
+                while (resultSet.next()) {
+                    Jogo jogo = new Jogo();
+                    jogo.setIdJogo(resultSet.getInt("id_jogo"));
+                    jogo.setNome(resultSet.getString("nome"));
+                    jogo.setDescricao(resultSet.getString("descricao"));
+                    jogo.setPreco(resultSet.getBigDecimal("preco"));
+                    jogo.setLancamento(resultSet.getDate("lancamento"));
+                    jogo.setNota(resultSet.getBigDecimal("nota"));
+                    jogo.setImagePath(resultSet.getString("image_path"));
+
+                    // Logs para informações adicionais
+                    String categoria = resultSet.getString("nome_categoria");
+                    String plataforma = resultSet.getString("nome_plataforma");
+                    String desenvolvedor = resultSet.getString("nome_desenvolvedor");
+
+                    Logger.getLogger(JogoDAO.class.getName()).log(Level.INFO, 
+                        "Jogo encontrado: {0}, Categoria: {1}, Plataforma: {2}, Desenvolvedor: {3}", 
+                        new Object[]{jogo.getNome(), categoria, plataforma, desenvolvedor});
+
+                    jogos.add(jogo);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(JogoDAO.class.getName()).log(Level.SEVERE, "Erro ao buscar jogos por categoria: " + nomeCategoria, e);
+            throw e;
+        }
+        return jogos;
+    }
+
 }

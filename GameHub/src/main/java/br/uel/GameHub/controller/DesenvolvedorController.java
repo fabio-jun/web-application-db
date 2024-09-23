@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,16 +47,6 @@ public class DesenvolvedorController {
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Desenvolvedor> createDesenvolvedor(@RequestBody Desenvolvedor desenvolvedor) {
-        try {
-            desenvolvedorDAO.create(desenvolvedor);
-            return ResponseEntity.status(HttpStatus.CREATED).body(desenvolvedor);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

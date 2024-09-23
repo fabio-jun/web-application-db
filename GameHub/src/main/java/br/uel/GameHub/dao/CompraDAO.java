@@ -53,13 +53,15 @@ public class CompraDAO implements DAO<Compra> {
     public void create(Compra compra) throws SQLException {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_QUERY)) {
+            // Definindo os parâmetros para a inserção da compra
             statement.setInt(1, compra.getIdCliente());
             statement.setBigDecimal(2, compra.getPreco());
             statement.setTimestamp(3, Timestamp.valueOf(compra.getDataHoraCompra()));
 
+            // Executando a inserção e capturando o ID gerado
             try (ResultSet generatedKeys = statement.executeQuery()) {
                 if (generatedKeys.next()) {
-                    compra.setIdCompra(generatedKeys.getInt(1)); 
+                    compra.setIdCompra(generatedKeys.getInt(1)); // Define o ID da compra gerado no objeto compra
                 } else {
                     throw new SQLException("Erro ao inserir compra, nenhum ID foi gerado.");
                 }
@@ -100,7 +102,7 @@ public class CompraDAO implements DAO<Compra> {
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setInt(1, compra.getIdCliente());
             statement.setBigDecimal(2, compra.getPreco());
-            statement.setObject(3, compra.getDataHoraCompra()); 
+            statement.setObject(3, compra.getDataHoraCompra()); // Atualiza a data e hora
             statement.setInt(4, compra.getIdCompra());
 
             if (statement.executeUpdate() < 1) {

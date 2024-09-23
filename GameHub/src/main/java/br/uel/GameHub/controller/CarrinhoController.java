@@ -55,13 +55,13 @@ public class CarrinhoController {
     @GetMapping("/{idCliente}")
     public ResponseEntity<List<Carrinho>> getCarrinhoByCliente(@PathVariable int idCliente) {
         try {
-            List<Carrinho> carrinhoList = carrinhoDAO.findByClienteId(idCliente); 
+            List<Carrinho> carrinhoList = carrinhoDAO.findByClienteId(idCliente); // Método que busca itens do carrinho pelo cliente
             if (carrinhoList.isEmpty()) {
-                return ResponseEntity.noContent().build(); 
+                return ResponseEntity.noContent().build(); // Retorna 204 No Content se o carrinho estiver vazio
             }
-        return ResponseEntity.ok(carrinhoList); 
+        return ResponseEntity.ok(carrinhoList); // Retorna a lista de itens do carrinho
     } catch (SQLException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); 
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 em caso de erro
     }
 }
 

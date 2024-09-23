@@ -131,7 +131,7 @@ public class CarrinhoDAO {
             PreparedStatement statement = connection.prepareStatement(DELETE_BY_CLIENTE_QUERY)) {
             statement.setInt(1, clienteId);
             int affectedRows = statement.executeUpdate();
-  
+        
             if (affectedRows == 0) {
                 throw new SQLException("Erro ao limpar carrinho: nenhum item encontrado para o clienteId: " + clienteId);
             }

@@ -69,7 +69,7 @@ public class JogoController {
         }
     }
 
-       @GetMapping("/buscar")
+    @GetMapping("/buscar")
     public ResponseEntity<List<Jogo>> searchByKeyword(@RequestParam String keyword) {
         try {
             List<Jogo> jogos = jogoDAO.searchByKeyword(keyword);
@@ -81,4 +81,44 @@ public class JogoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/desenvolvedor/{nomeDesenvolvedor}")
+    public ResponseEntity<List<Jogo>> getJogosByDesenvolvedor(@PathVariable String nomeDesenvolvedor) {
+        try {
+            List<Jogo> jogos = jogoDAO.searchByDesenvolvedor(nomeDesenvolvedor);
+            if (jogos.isEmpty()) {
+                return ResponseEntity.noContent().build(); // Retorna 204 No Content se não encontrar jogos
+            }
+            return ResponseEntity.ok(jogos); // Retorna a lista de jogos
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 em caso de erro
+        }
+    }
+
+    @GetMapping("/plataforma/{nomePlataforma}")
+    public ResponseEntity<List<Jogo>> getJogosByPlataforma(@PathVariable String nomePlataforma) {
+        try {
+            List<Jogo> jogos = jogoDAO.searchByPlataforma(nomePlataforma);
+            if (jogos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(jogos);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/categoria/{nomeCategoria}")
+    public ResponseEntity<List<Jogo>> getJogosByCategoria(@PathVariable String nomeCategoria) {
+        try {
+            List<Jogo> jogos = jogoDAO.searchByCategoria(nomeCategoria);
+            if (jogos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(jogos);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

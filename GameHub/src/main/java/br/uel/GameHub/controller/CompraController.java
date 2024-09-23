@@ -55,54 +55,62 @@ public class CompraController {
     }
 
     @PostMapping("/realizar/{clienteId}")
-public ResponseEntity<Compra> realizarCompra(@PathVariable int clienteId) {
-    try {
-        System.out.println("Iniciando compra para clienteId: " + clienteId);
+    public ResponseEntity<Compra> realizarCompra(@PathVariable int clienteId) {
+        try {
+            // Log para saber quando a requisição começa
+            System.out.println("Iniciando compra para clienteId: " + clienteId);
 
-        List<Carrinho> itensCarrinho = carrinhoDAO.findByClienteId(clienteId);
-        if (itensCarrinho.isEmpty()) {
-            System.out.println("Carrinho vazio para o clienteId: " + clienteId);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            // Recupera os itens do carrinho do cliente
+            List<Carrinho> itensCarrinho = carrinhoDAO.findByClienteId(clienteId);
+            if (itensCarrinho.isEmpty()) {
+                System.out.println("Carrinho vazio para o clienteId: " + clienteId);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
+            // Calcula o preço total da compra
+            BigDecimal precoTotal = BigDecimal.ZERO;
+            for (Carrinho item : itensCarrinho) {
+                // Recupera o Jogo a partir do JogoDAO
+                Jogo jogo = jogoDAO.read(item.getIdJogo());
+                System.out.println("Processando item do jogo: " + jogo.getNome());
+
+                BigDecimal precoItem = jogo.getPreco().multiply(BigDecimal.valueOf(item.getQtd()));
+                precoTotal = precoTotal.add(precoItem);
+            }
+
+            // Cria a compra
+            Compra compra = new Compra();
+            compra.setIdCliente(clienteId);
+            compra.setPreco(precoTotal);
+            compra.setDataHoraCompra(LocalDateTime.now());
+            compraDAO.create(compra);
+
+            System.out.println("Compra criada com sucesso. ID da compra: " + compra.getIdCompra());
+
+            // Adiciona os itens do carrinho à tabela de itens de compra
+            for (Carrinho item : itensCarrinho) {
+                Jogo jogo = jogoDAO.read(item.getIdJogo());
+
+                ItemCompra itemCompra = new ItemCompra();
+                itemCompra.setItemIdComp(compra.getIdCompra());
+                itemCompra.setItemIdJogo(item.getIdJogo());
+                itemCompra.setItemNomeJogo(jogo.getNome());
+                itemCompra.setItemPrecoJogo(jogo.getPreco().doubleValue());
+                itemCompra.setItemQtd(item.getQtd());
+
+                itemCompraDAO.create(itemCompra);
+            }
+
+            // Limpa o carrinho após a compra
+            carrinhoDAO.clearCarrinhoByClienteId(clienteId);
+            System.out.println("Carrinho limpo com sucesso para clienteId: " + clienteId);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(compra);
+        } catch (SQLException e) {
+            // Log detalhado do erro
+            System.err.println("Erro ao realizar a compra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        BigDecimal precoTotal = BigDecimal.ZERO;
-        for (Carrinho item : itensCarrinho) {
-            Jogo jogo = jogoDAO.read(item.getIdJogo());
-            System.out.println("Processando item do jogo: " + jogo.getNome());
-
-            BigDecimal precoItem = jogo.getPreco().multiply(BigDecimal.valueOf(item.getQtd()));
-            precoTotal = precoTotal.add(precoItem);
-        }
-
-        Compra compra = new Compra();
-        compra.setIdCliente(clienteId);
-        compra.setPreco(precoTotal);
-        compra.setDataHoraCompra(LocalDateTime.now());
-        compraDAO.create(compra);
-
-        System.out.println("Compra criada com sucesso. ID da compra: " + compra.getIdCompra());
-
-        for (Carrinho item : itensCarrinho) {
-            Jogo jogo = jogoDAO.read(item.getIdJogo());
-
-            ItemCompra itemCompra = new ItemCompra();
-            itemCompra.setItemIdComp(compra.getIdCompra());
-            itemCompra.setItemIdJogo(item.getIdJogo());
-            itemCompra.setItemNomeJogo(jogo.getNome());
-            itemCompra.setItemPrecoJogo(jogo.getPreco().doubleValue());
-            itemCompra.setItemQtd(item.getQtd());
-
-            itemCompraDAO.create(itemCompra);
-        }
-
-        carrinhoDAO.clearCarrinhoByClienteId(clienteId);
-        System.out.println("Carrinho limpo com sucesso para clienteId: " + clienteId);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(compra);
-    } catch (SQLException e) {
-        System.err.println("Erro ao realizar a compra: " + e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
 }
 
     @GetMapping("/{id}")
