@@ -87,11 +87,11 @@ public class JogoController {
         try {
             List<Jogo> jogos = jogoDAO.searchByDesenvolvedor(nomeDesenvolvedor);
             if (jogos.isEmpty()) {
-                return ResponseEntity.noContent().build(); // Retorna 204 No Content se não encontrar jogos
+                return ResponseEntity.noContent().build(); 
             }
-            return ResponseEntity.ok(jogos); // Retorna a lista de jogos
+            return ResponseEntity.ok(jogos); 
         } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 em caso de erro
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

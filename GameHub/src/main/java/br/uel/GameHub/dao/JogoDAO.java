@@ -227,7 +227,7 @@ public class JogoDAO implements DAO<Jogo> {
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(SEARCH_QUERY)) {
-            String searchPattern = "%" + keyword + "%"; // busca por qualquer parte da palavra
+            String searchPattern = "%" + keyword + "%";
             statement.setString(1, searchPattern);
             statement.setString(2, searchPattern);
 
@@ -268,7 +268,6 @@ public class JogoDAO implements DAO<Jogo> {
                     jogo.setNota(resultSet.getBigDecimal("nota"));
                     jogo.setImagePath(resultSet.getString("image_path"));
                     
-                    // Caso queira adicionar o nome da categoria, plataforma, etc.
                     String categoria = resultSet.getString("nome_categoria");
                     String plataforma = resultSet.getString("nome_plataforma");
                     String desenvolvedor = resultSet.getString("nome_desenvolvedor");
@@ -286,7 +285,7 @@ public class JogoDAO implements DAO<Jogo> {
         return jogos;
     }
 
-    // Método para buscar jogos por plataforma
+
     public List<Jogo> searchByPlataforma(String nomePlataforma) throws SQLException {
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = getConnection();
@@ -316,7 +315,6 @@ public class JogoDAO implements DAO<Jogo> {
         return jogos;
     }
 
-    // Método para buscar jogos por categoria
     public List<Jogo> searchByCategoria(String nomeCategoria) throws SQLException {
         List<Jogo> jogos = new ArrayList<>();
         try (Connection connection = getConnection();
@@ -340,7 +338,6 @@ public class JogoDAO implements DAO<Jogo> {
                     jogo.setNota(resultSet.getBigDecimal("nota"));
                     jogo.setImagePath(resultSet.getString("image_path"));
 
-                    // Logs para informações adicionais
                     String categoria = resultSet.getString("nome_categoria");
                     String plataforma = resultSet.getString("nome_plataforma");
                     String desenvolvedor = resultSet.getString("nome_desenvolvedor");
