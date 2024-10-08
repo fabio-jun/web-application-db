@@ -36,6 +36,9 @@ public class ItemCompraDAO {
         "SELECT id_item_comp, item_id_comp, item_id_jogo, item_nome_jogo, item_preco_jogo, item_qtd " +
         "FROM loja.item_compra";
 
+    private static final String FIND_ALL_BY_ITEM_ID_COMP_QUERY =
+        "SELECT * FROM loja.item_compra WHERE item_id_comp = ?;";
+
     @Autowired
     private DataSource dataSource;
 
@@ -114,4 +117,29 @@ public class ItemCompraDAO {
         }
         return itemCompraList;
     }
+
+
+    public List<ItemCompra> findAllByItemIdComp(int itemIdComp) throws SQLException {
+        List<ItemCompra> itensCompra = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_ITEM_ID_COMP_QUERY)) {
+            statement.setInt(1, itemIdComp);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    ItemCompra itemCompra = new ItemCompra();
+                    itemCompra.setIdItemComp(resultSet.getInt("id_item_comp"));
+                    itemCompra.setItemIdComp(resultSet.getInt("item_id_comp"));
+                    itemCompra.setItemIdJogo(resultSet.getInt("item_id_jogo"));
+                    itemCompra.setItemNomeJogo(resultSet.getString("item_nome_jogo"));
+                    itemCompra.setItemPrecoJogo(resultSet.getDouble("item_preco_jogo"));
+                    itemCompra.setItemQtd(resultSet.getInt("item_qtd"));
+                    itensCompra.add(itemCompra);
+                }
+            }
+        }
+        return itensCompra;
+    }
+
 }

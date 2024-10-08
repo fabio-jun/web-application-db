@@ -142,4 +142,18 @@ public class CompraController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/itens/{itemIdComp}")
+    public ResponseEntity<List<ItemCompra>> getItensCompraByItemIdComp(@PathVariable int itemIdComp) {
+        try {
+            List<ItemCompra> itensCompra = itemCompraDAO.findAllByItemIdComp(itemIdComp);
+            if (itensCompra.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(itensCompra);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar itens da compra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
