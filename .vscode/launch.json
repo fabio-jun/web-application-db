@@ -16,6 +16,16 @@
             "projectName": "gamehub",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GameHubApplication<GameHub>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.uel.gamehub.GameHubApplication",
+            "projectName": "GameHub",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

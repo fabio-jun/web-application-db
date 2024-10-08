@@ -1,6 +1,7 @@
 package br.uel.gamehub.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,10 +52,16 @@ public class ReviewDAO {
             statement.setInt(2, review.getRevIdCliente());
             statement.setString(3, review.getRevComentario());
             statement.setDouble(4, review.getRevNota());
-            statement.setString(5, review.getRevData());
+            Date revData = Date.valueOf(review.getRevData());
+            statement.setDate(5, revData);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            // Adicione um log mais detalhado
+            System.err.println("Erro ao criar review: " + e.getMessage());
+            throw e;
         }
     }
+    
 
     public Review read(int revIdJogo, int revIdCliente) throws SQLException {
         Review review = null;

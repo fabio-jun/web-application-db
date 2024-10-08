@@ -36,7 +36,7 @@ public class RelatorioDAO {
     private static final String VENDAS_POR_PERIODO_QUERY =
         "SELECT COUNT(c.id_comp) AS total_vendas, SUM(c.comp_preco) AS total_arrecadado " +
         "FROM loja.compra c " +
-        "WHERE c.comp_data_hora BETWEEN ? AND ?;";
+        "WHERE c.comp_data_hora BETWEEN CAST(? AS TIMESTAMP) AND CAST(? AS TIMESTAMP)";
 
     private static final String DESEMPENHO_POR_CATEGORIA_QUERY =
         "SELECT cat.nome_categoria, SUM(ic.item_qtd) AS total_vendido " +
@@ -72,8 +72,9 @@ public class RelatorioDAO {
         "FROM loja.jogo j " +
         "LEFT JOIN loja.item_compra ic ON j.id_jogo = ic.item_id_jogo " +
         "GROUP BY j.nome " +
+        "HAVING SUM(ic.item_qtd) > 0" +
         "ORDER BY total_vendido ASC " +
-        "LIMIT 10;";
+        "LIMIT 5;";
 
     private static final String VENDAS_POR_PLATAFORMA_QUERY =
         "SELECT p.nome_plataforma, SUM(ic.item_qtd) AS total_vendido " +
